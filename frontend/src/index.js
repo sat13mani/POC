@@ -74,13 +74,14 @@ class App extends React.Component {
                     this.setState({flag: 1})
                     if (res.data !== 0) {
                         let apiUrl = `https://api.github.com/users/${res.data}`;
-                        let token = "960b4d41a7e31b30cbeefc4bec2003b5f60042d4";
+                        let token = "8f8628989178221dd057387568cf38742b87288e";
                         axios
                             .get(apiUrl, {
                                 headers: { Authorization: `Bearer ${token}` },
                             })
                             .then((res) => {
                                 return res;
+                                console.log("github res", res)
                             })
                             .then((res) => {
                                 this.setState({
@@ -156,11 +157,19 @@ class App extends React.Component {
         });
     };
 
+    custom_sort = (a, b) => {
+        return a.stars - b.stars;
+    }
+
     render() {
         let skills = this.state.skills.map(item => {
-            return <Card.Text>{item}</Card.Text>
+            return <span>{item}&nbsp; | &nbsp;</span>
         })
-        var repo_list = this.state.repo_list.map((item, idx) => {
+
+        var sorted = this.state.repo_list;
+        sorted = sorted.sort(this.custom_sort).reverse();
+
+        var repo_list = sorted.map((item, idx) => {
             if (!item.description) {
                 item.description = "None";
             }
@@ -197,6 +206,8 @@ class App extends React.Component {
         if (this.state.gitAvailable === "1") {
             Git = (
                 <Container style={{ margin: "30px" , height: '30px'}}>
+                    <div style={{marginLeft: "25rem"}}> <u>GitHub Data</u> </div>
+                    <div style={{height:"20px"}} />
                     <Container>
                     <Row>
                         <Col>
@@ -231,9 +242,13 @@ class App extends React.Component {
                         </Col>
                     </Row>
                 </Container>
+                    <div style={{height:"20px"}} />
+                    <div style={{marginLeft: "25rem"}}><u> Top 3 Repositories</u>  </div>
                     <div>
                         <div style={{ height: "20px" }}></div>
-                        {repo_list}
+                        {repo_list[0]}
+                        {repo_list[1]}
+                        {repo_list[2]}
                     </div>
                 </Container>
             );

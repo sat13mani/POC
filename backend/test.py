@@ -25,6 +25,7 @@ api = linkedin_api.Linkedin('sat13mani@gmail.com', 'dustbin@123')
 
 @app.route("/username/<name>")
 def getProfile(name):
+	print(name)
 	profile = api.get_profile(name)
 	return profile
 
